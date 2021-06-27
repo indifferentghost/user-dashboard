@@ -10,7 +10,7 @@ const server = http.createServer((req, res) => {
   if (req.method.toLowerCase() === 'get') {
     if (page == '/') {
       res.write(fs.readFileSync(`./index.html`));
-    } else if (page) {
+    } else if (page === '/test') {
       // somehow get title
       const title = 'test';
       const body = 'body';
