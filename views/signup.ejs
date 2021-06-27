@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - You know you want to!</title>
+</head>
+<body>
+  <form>
+    <div id="error"></div>
+    <label for="email">email</label>
+    <input name="email" id="email" />
+
+    <label for="password">password</label>
+    <input name="password" id="password" type="password" />
+
+    <input type="submit" />
+  </form>
+</body>
+<script>
+  const form = document.querySelector('form');
+  async function submit(event) {
+    event.preventDefault();
+    const email = form.querySelector('#email').value;
+    const password = form.querySelector('#password').value;
+
+    console.log(JSON.stringify({ email, password }))
+
+    const response = await fetch('/signup', { 
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+    const value = await response.json();
+    console.log(value);
+    if (!response.ok) {
+      form.querySelector('#error').innerText = value.error
+    }
+  }
+  form.onsubmit = submit;
+</script>
+</html>
