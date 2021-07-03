@@ -26,4 +26,28 @@ router.post('/signup', (req, res) => {
   res.status(201);
 });
 
+router.get('/signin', (req, res) => {
+  // TODO: If signed in redirect to dashboard
+  res.render('signin');
+});
+
+router.post('/signin', async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  // if you were sending the user to the client as an API,
+  // you should omit the following
+  // ^^^^ this doesn't matter Server-side rendering like EJS
+  // version key: __v, password, timestamps
+
+  const passwordsMatch = user.comparePasswords(password);
+
+  console.log(passwordsMatch);
+
+  // TODO: signin <- session cookie ->
+
+  res.status(200);
+});
+
 module.exports = router;
