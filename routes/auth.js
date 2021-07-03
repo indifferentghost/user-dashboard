@@ -50,4 +50,9 @@ router.post('/signin', async (req, res) => {
   res.redirect('/dashboard');
 });
 
+router.get('/signout', async (req, res) => {
+  req.session = null;
+  res.redirect('/signin');
+});
+
 module.exports = router;

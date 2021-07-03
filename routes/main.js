@@ -33,7 +33,7 @@ router.post('/settings', (req, res) => {
 
 router.get('/dashboard', (req, res) => {
   if (!req.session.user) {
-    res.redirect('/login');
+    res.redirect('/signin');
   }
   // TODO: middleware validate that user email exists
   // TODO: render user email
