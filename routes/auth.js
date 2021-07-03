@@ -36,6 +36,12 @@ router.post('/signin', async (req, res) => {
 
   const user = await User.findOne({ email });
 
+  if (!user) {
+    // TODO: flash error message
+    res.status(401).json({ error: "No user found, or password incorrect" });
+    return;
+  }
+
   // if you were sending the user to the client as an API,
   // you should omit the following
   // ^^^^ this doesn't matter Server-side rendering like EJS
@@ -43,7 +49,10 @@ router.post('/signin', async (req, res) => {
 
   const passwordsMatch = user.comparePasswords(password);
 
-  console.log(passwordsMatch);
+  if (!passwordsMatch) {
+    res.status(401).json({ error: "No user found, or password incorrect" });
+    return;
+  }
 
   req.session.user = user.email;
 

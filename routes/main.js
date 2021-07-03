@@ -1,6 +1,20 @@
 const express = require("express");
+const User = require('../models/user');
 
 const router = express.Router();
+
+async function validateUserSession(req, res, next) {
+  const email = req.session.user
+  if (!email) {
+    res.redirect('/dashboard');
+  }
+  const user = await User.findOne({ email })
+  if (!user) {
+    res.redirect('/dashboard');
+  }
+  req.user = user;
+  next();
+}
 
 router.get("/", (req, res) => {
   res.render("index");
@@ -31,13 +45,11 @@ router.post('/settings', (req, res) => {
   res.status(200).end();
 })
 
-router.get('/dashboard', (req, res) => {
-  if (!req.session.user) {
-    res.redirect('/signin');
-  }
+router.get('/dashboard', validateUserSession, (req, res) => {
   // TODO: middleware validate that user email exists
   // TODO: render user email
-  res.render('dashboard');
+  console.log(req.user, req.session.user)
+  res.render('dashboard', { user: req.user });
 });
 
 router.get((req, res) => {
