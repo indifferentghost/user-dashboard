@@ -45,9 +45,9 @@ router.post('/signin', async (req, res) => {
 
   console.log(passwordsMatch);
 
-  // TODO: signin <- session cookie ->
+  req.session.user = user.email;
 
-  res.status(200);
+  res.redirect('/dashboard');
 });
 
 module.exports = router;
