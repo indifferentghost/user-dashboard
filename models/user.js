@@ -25,12 +25,21 @@ const UserSchema = mongoose.Schema({
 // validate the password
 // password on the individual user
 
-// static methods
-// <-- User model
-// Hash the password
-// Curly's law of do one thing
-// X hashing and setting the password 
-// (Checkmark) Do create two functions for this
+// `this` is hard
+// congitive load
+// user.password
+UserSchema.methods.comparePasswords = function(passwordToTest) {
+  return bcrypt.compareSync(passwordToTest, this.password);
+}
+/* 
+// why we're using a function declaration instead of an arrow function
+const userInstance = User.find({ _id: id });
+
+const { comparePasswords } = userInstace;
+
+comparePasswords()
+*/
+
 UserSchema.static.hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
