@@ -22,6 +22,15 @@ router.get("/choose", (req, res) => {
   res.render("choose", JSON);
 });
 
+router.get('/settings', (req, res) => {
+  res.json({ settings: req.session.settings });
+});
+
+router.post('/settings', (req, res) => {
+  req.session.settings = req.body;
+  res.status(200).end();
+})
+
 router.get('/dashboard', (req, res) => {
   if (!req.session.user) {
     res.redirect('/login');
@@ -29,7 +38,7 @@ router.get('/dashboard', (req, res) => {
   // TODO: middleware validate that user email exists
   // TODO: render user email
   res.render('dashboard');
-})
+});
 
 router.get((req, res) => {
   res.status(404);
